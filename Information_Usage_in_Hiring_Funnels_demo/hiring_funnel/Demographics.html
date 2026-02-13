@@ -1,0 +1,97 @@
+{{ extends "global/Page.html" }}
+{{ block title }}Disclaimer{{ endblock }}
+
+{{ block content }}
+
+<link rel="stylesheet" href="{{ static 'hiring-funnel.css' }}">
+
+<h3>Demographics Survey</h3>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.has_hiring_experience.label }}</p>
+    {{ form.has_hiring_experience }}
+</div>
+
+<div id="experience-type-section" style="margin-bottom: 30px; display: none;">
+    <p>{{ form.hiring_experience_type.label }}</p>
+    {{ form.hiring_experience_type }}
+</div>
+
+<div id="experience-other-section" style="margin-bottom: 30px; display: none;">
+    <p>{{ form.hiring_experience_other.label }}</p>
+    {{ form.hiring_experience_other }}
+</div>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.age_range.label }}</p>
+    {{ form.age_range }}
+</div>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.gender.label }}</p>
+    {{ form.gender }}
+</div>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.device_type.label }}</p>
+    {{ form.device_type }}
+</div>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.survey_comments.label }}</p>
+    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">When you are finished, please hit &gt;&gt; to complete the survey. We hope you enjoyed it!</p>
+    {{ form.survey_comments }}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hasExperience = document.querySelectorAll('input[name="has_hiring_experience"]');
+    const experienceTypeSection = document.getElementById('experience-type-section');
+    const experienceOtherSection = document.getElementById('experience-other-section');
+    const experienceTypeInputs = document.querySelectorAll('input[name="hiring_experience_type"]');
+    
+    // Show/hide experience type based on whether they have experience
+    hasExperience.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === '1') {  // Yes, I have
+                experienceTypeSection.style.display = 'block';
+            } else {
+                experienceTypeSection.style.display = 'none';
+                experienceOtherSection.style.display = 'none';
+                // Clear selections
+                experienceTypeInputs.forEach(input => input.checked = false);
+                const otherField = document.querySelector('textarea[name="hiring_experience_other"]');
+                if (otherField) otherField.value = '';
+            }
+        });
+    });
+    
+    // Show/hide "other" description field based on experience type
+    experienceTypeInputs.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'other') {
+                experienceOtherSection.style.display = 'block';
+            } else {
+                experienceOtherSection.style.display = 'none';
+                const otherField = document.querySelector('textarea[name="hiring_experience_other"]');
+                if (otherField) otherField.value = '';
+            }
+        });
+    });
+    
+    // Check initial state on page load
+    const selectedExperience = document.querySelector('input[name="has_hiring_experience"]:checked');
+    if (selectedExperience && selectedExperience.value === '1') {
+        experienceTypeSection.style.display = 'block';
+        
+        const selectedType = document.querySelector('input[name="hiring_experience_type"]:checked');
+        if (selectedType && selectedType.value === 'other') {
+            experienceOtherSection.style.display = 'block';
+        }
+    }
+});
+</script>
+
+{{ next_button }}
+
+{{ endblock }}

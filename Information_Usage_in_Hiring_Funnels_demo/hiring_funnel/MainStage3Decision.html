@@ -1,0 +1,58 @@
+{{ extends "global/Page.html" }}
+{{ block title }}Main Round {{ round_num }} - Stage 3: In-Person Interview - Final Hiring Decision{{ endblock }}
+
+{{ block content }}
+
+<link rel="stylesheet" href="{{ static 'hiring-funnel.css' }}">
+
+<div class="table-scroll">
+    <table class="candidate-scores-table">
+        <thead>
+            <tr>
+                <th class="score-type-header" rowspan="2">Score Type</th>
+                <th colspan="{{ candidates|length }}" style="text-align: center; border-bottom: 1px solid #999; padding: 4px; font-weight: bold;">Candidates</th>
+            </tr>
+            <tr>
+                {% for candidate in candidates %}
+                    <th class="candidate-header">{{ candidate.label }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-label">Stage 1: Resume</td>
+                {% for candidate in candidates %}
+                    <td class="score-cell">{{ candidate.resume }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="row-label">Stage 2: Zoom</td>
+                {% for candidate in candidates %}
+                    <td class="score-cell">{{ candidate.zoom }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="row-label">Stage 3: In-Person</td>
+                {% for candidate in candidates %}
+                    <td class="score-cell">{{ candidate.inperson }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="checkbox-row">
+                <td class="row-label">Hire</td>
+                {% for candidate in candidates %}
+                    <td class="checkbox-cell">
+                        <input type="radio" id="candidate-{{ candidate.label }}" name="hired_candidate" value="{{ candidate.label }}" required>
+                    </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="instruction-text" style="margin-top: 20px;">
+    <p>Please review all candidate scores and select one candidate to hire.</p>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}

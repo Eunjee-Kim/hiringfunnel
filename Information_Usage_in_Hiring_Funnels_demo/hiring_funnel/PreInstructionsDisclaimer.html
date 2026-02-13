@@ -1,0 +1,15 @@
+{{ extends "global/Page.html" }}
+{{ block title }}Disclaimer{{ endblock }}
+
+{{ block content }}
+
+<h3>Before We Begin</h3>
+
+<div style="margin-bottom: 30px;">
+    <p>{{ form.Q111_instructions_willing.label }}</p>
+    {{ form.Q111_instructions_willing }}
+</div>
+
+{{ next_button }}
+
+{{ endblock }}

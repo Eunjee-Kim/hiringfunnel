@@ -1,0 +1,262 @@
+{{ extends "global/DemoPage.html" }}
+{{ block title }}Demo: Choose a Condition to Explore{{ endblock }}
+
+{{ block content }}
+
+<link rel="stylesheet" href="{{ static 'hiring-funnel.css' }}">
+
+<style>
+    .demo-container {
+        max-width: 900px;
+        margin: 30px auto;
+    }
+    
+    .demo-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .demo-header h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .demo-header p {
+        font-size: 16px;
+        color: #666;
+        margin: 0;
+    }
+    
+    .condition-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+    
+    .condition-card {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .condition-card:hover {
+        border-color: #2196F3;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+    }
+    
+    .condition-card.selected {
+        border-color: #2196F3;
+        background-color: #f0f8ff;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.25);
+    }
+    
+    .condition-card h3 {
+        font-size: 20px;
+        margin: 0 0 15px 0;
+        color: #333;
+    }
+    
+    .condition-card .description {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .condition-card .badge {
+        display: inline-block;
+        background-color: #e3f2fd;
+        color: #2196F3;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    .radio-wrapper {
+        margin-top: 15px;
+    }
+    
+    .radio-wrapper input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: #2196F3;
+    }
+    
+    .comparison-table {
+        width: 100%;
+        margin: 30px 0;
+        border-collapse: collapse;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .comparison-table th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+    }
+    
+    .comparison-table tr:nth-child(even) {
+        background-color: #fafafa;
+    }
+    
+    .demo-info {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .button-group button {
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-continue {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .btn-continue:hover {
+        background-color: #45a049;
+    }
+    
+    .btn-continue:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="demo-container">
+    <div class="demo-header">
+        <h1>Study Demo: Explore Both Conditions</h1>
+        <p>This is an interactive demo. You can explore either condition to understand the interface before starting the actual study.</p>
+    </div>
+    
+    <div class="demo-info">
+        ℹ️ <strong>Demo Mode:</strong> Select a condition below to see what the hiring task will look like. You can review the practice round and understand the flow. After exploring, proceed to the actual study.
+    </div>
+
+    <form method="post">
+        <div class="condition-options">
+            <div class="condition-card" id="card-1" onclick="selectCondition(1)">
+                <div class="badge">CONDITION 1</div>
+                <h3>Single-Stage Screening</h3>
+                <div class="description">
+                    {{ condition_1_description }}
+                </div>
+                <div class="radio-wrapper">
+                    <input type="radio" id="cond-1" name="demo_choice" value="1">
+                    <label for="cond-1">Explore This</label>
+                </div>
+            </div>
+            
+            <div class="condition-card" id="card-2" onclick="selectCondition(2)">
+                <div class="badge">CONDITION 2</div>
+                <h3>Multi-Stage Funnel</h3>
+                <div class="description">
+                    {{ condition_2_description }}
+                </div>
+                <div class="radio-wrapper">
+                    <input type="radio" id="cond-2" name="demo_choice" value="2">
+                    <label for="cond-2">Explore This</label>
+                </div>
+            </div>
+        </div>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Condition 1 (Single-Stage)</th>
+                    <th>Condition 2 (Multi-Stage)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Process</strong></td>
+                    <td>1 decision stage</td>
+                    <td>3 sequential gates</td>
+                </tr>
+                <tr>
+                    <td><strong>Gate 1</strong></td>
+                    <td>See Resume scores for all 3</td>
+                    <td>Review 10 Resume scores, select 5</td>
+                </tr>
+                <tr>
+                    <td><strong>Gate 2</strong></td>
+                    <td>See Zoom scores for all 3</td>
+                    <td>Review 5 Zoom scores, select 3</td>
+                </tr>
+                <tr>
+                    <td><strong>Gate 3</strong></td>
+                    <td>See In-Person scores, hire 1</td>
+                    <td>Review all 3 scores, hire 1</td>
+                </tr>
+                <tr>
+                    <td><strong>Information Available</strong></td>
+                    <td>All 3 stages shown together</td>
+                    <td>Revealed progressively by stage</td>
+                </tr>
+                <tr>
+                    <td><strong>Decision Type</strong></td>
+                    <td>One-time selection</td>
+                    <td>Sequential filtering</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="button-group">
+            <button type="submit" class="btn-continue" id="continue-btn" disabled>Continue to Study</button>
+        </div>
+    </form>
+
+<script>
+    function selectCondition(condition) {
+        // Update card styling
+        document.getElementById('card-1').classList.toggle('selected', condition === 1);
+        document.getElementById('card-2').classList.toggle('selected', condition === 2);
+        
+        // Update radio button
+        document.getElementById('cond-' + condition).checked = true;
+        
+        // Enable continue button
+        document.getElementById('continue-btn').disabled = false;
+    }
+    
+    // Enable continue button when radio is manually selected
+    document.querySelectorAll('input[name="demo_choice"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('continue-btn').disabled = false;
+            const condition = parseInt(this.value);
+            selectCondition(condition);
+        });
+    });
+</script>
+
+{{ endblock }}

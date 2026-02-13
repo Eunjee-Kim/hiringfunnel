@@ -1,0 +1,55 @@
+
+{{ extends "otree/Page.html" }}
+
+{{ block global_styles  }}
+    <link rel="stylesheet" href="{{ static 'styles.css' }}">
+    <link rel="stylesheet" href="{{ static 'hiring-funnel.css' }}">
+    <script src="{{ static 'otai-utils.js' }}"></script>
+    <style>
+        .progress-bar-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            text-align: right;
+        }
+        body {
+            padding-top: 60px;
+        }
+    </style>
+{{ endblock }}
+
+{{ block page_body }}
+    <div class="progress-bar-wrapper">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: {{ progress_percentage }}%"></div>
+        </div>
+        <div class="progress-text">Study Progress: {{ progress_percentage }}%</div>
+    </div>
+    
+    {{ block content }}{{ endblock }}
+{{ endblock }}
