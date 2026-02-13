@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/25295747/README.md)
 # Information Usage in Multi-Stage Hiring Funnels - oTree Implementation
 
 ## Overview

@@ -1,0 +1,38 @@
+{{ extends "global/Page.html" }}
+{{ block title }}Practice Round - Gate 1 After Screening{{ endblock }}
+
+{{ block content }}
+
+<link rel="stylesheet" href="{{ static 'hiring-funnel.css' }}">
+
+<div class="table-scroll">
+    <table class="candidate-scores-table">
+        <thead>
+            <tr>
+                <th class="score-type-header" rowspan="2">Score Type</th>
+                <th colspan="10" style="text-align: center; border-bottom: 1px solid #999; padding: 4px; font-weight: bold;">Candidates</th>
+            </tr>
+            <tr>
+                {% for candidate in candidates %}
+                    <th class="candidate-header{% if candidate.eliminated %} eliminated{% endif %}">{% if not candidate.eliminated %}{{ candidate.label }}{% endif %}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-label">Stage 1: Resume</td>
+                {% for candidate in candidates %}
+                    <td class="score-cell{% if candidate.eliminated %} eliminated{% endif %}">{% if not candidate.eliminated %}{{ candidate.resume }}{% endif %}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="instruction-text" style="margin-top: 20px;">
+    <p>Now that you have selected the candidates to advance, only {{ advanced_count }} candidates remain. Candidates eliminated in the previous round are shaded grey. Click next to reveal the Zoom interview scores (Stage 2) for these {{ advanced_count }} candidates.</p>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
